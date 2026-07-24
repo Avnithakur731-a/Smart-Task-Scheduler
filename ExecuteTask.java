@@ -10,6 +10,12 @@ public class ExecuteTask {
         System.out.println("Status : " + task.getStatus());
     }
 
+    public void execute(int taskId){
+
+    System.out.println("Task " + taskId + " Executed Successfully");
+
+}
+
     // Mark Completed
     public void markCompleted(Task task) {
 

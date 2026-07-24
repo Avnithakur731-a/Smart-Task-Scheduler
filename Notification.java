@@ -5,6 +5,11 @@ public class Notification {
     private String message;
     private String status;
 
+
+    public Notification(){
+
+}
+
     public Notification(int notificationId, int taskId, String message, String status) {
         this.notificationId = notificationId;
         this.taskId = taskId;

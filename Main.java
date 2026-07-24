@@ -10,21 +10,45 @@ public class Main {
         TaskService taskService = new TaskService();
         SearchService searchService = new SearchService();
         FileManager fileManager = new FileManager();
+        LoggerService loggerService = new LoggerService();
+Notification notification = new Notification();
+CategoryService categoryService = new CategoryService();
+ReportService reportService = new ReportService();
+ValidationService validationService = new ValidationService();
+Reminder reminder = new Reminder();
+
+WorkflowEngine workflowEngine = new WorkflowEngine();
+PriorityManager priorityManager = new PriorityManager();
+ExecuteTask executeTask = new ExecuteTask();
+
+AnalyticsDashboard analyticsDashboard = new AnalyticsDashboard();
+ActivityLogService activityLogService = new ActivityLogService();
+
+DependencyManager dependencyManager = new DependencyManager();
+RecurringTaskService recurringTaskService = new RecurringTaskService();
 
         while (true) {
 
             System.out.println("\n========== SMART TASK SCHEDULER ==========");
-            System.out.println("1. Add User");
-            System.out.println("2. Login");
-            System.out.println("3. Create Task");
-            System.out.println("4. Display Tasks");
-            System.out.println("5. Edit Task");
-            System.out.println("6. Delete Task");
-            System.out.println("7. Search Task By ID");
-            System.out.println("8. Search Task By Title");
-            System.out.println("9. Save Tasks");
-            System.out.println("10. Exit");
-            System.out.print("Enter Choice : ");
+System.out.println("1. Add User");
+System.out.println("2. Login");
+System.out.println("3. Create Task");
+System.out.println("4. Display Tasks");
+System.out.println("5. Edit Task");
+System.out.println("6. Delete Task");
+System.out.println("7. Search Task By ID");
+System.out.println("8. Search Task By Title");
+System.out.println("9. Save Tasks");
+System.out.println("10. Analytics Dashboard");
+System.out.println("11. Show Activity Logs");
+System.out.println("12. Add Dependency");
+System.out.println("13. Show Dependencies");
+System.out.println("14. Add Recurring Task");
+System.out.println("15. Show Recurring Tasks");
+System.out.println("16. Execute Task");
+System.out.println("17. Generate Report");
+System.out.println("18. Exit");
+System.out.print("Enter Choice : ");
 
             int choice = sc.nextInt();
 
@@ -212,12 +236,119 @@ public class Main {
 
                 case 10:
 
-                    System.out.println("Thank You...");
-                    return;
+    analyticsDashboard.displayAnalytics(
+            taskService.getTaskCount(),
+            taskService.getCompletedTaskCount(),
+            taskService.getPendingTaskCount());
 
-                default:
+    break;
 
-                    System.out.println("Invalid Choice");
+case 11:
+
+    activityLogService.showLogs();
+
+    break;
+
+case 12:
+
+    System.out.print("Enter Task ID : ");
+    int taskId1 = sc.nextInt();
+
+    System.out.print("Depends On Task ID : ");
+    int dependsId = sc.nextInt();
+
+    TaskDependency dependency =
+            new TaskDependency(taskId1, dependsId);
+
+    dependencyManager.addDependency(dependency);
+
+    activityLogService.addLog(
+            new ActivityLog(
+                    "Dependency Added",
+                    "Today",
+                    "Now"));
+
+    break;
+
+case 13:
+
+    dependencyManager.showDependencies();
+
+    break;
+
+case 14:
+
+    System.out.print("Enter Task ID : ");
+    int recurringTaskId = sc.nextInt();
+
+    sc.nextLine();
+
+    System.out.print("Enter Recurrence Type (Daily/Weekly/Monthly) : ");
+    String recurrenceType = sc.nextLine();
+
+    System.out.print("Enter Interval : ");
+    int interval = sc.nextInt();
+
+    RecurringTask recurringTask =
+            new RecurringTask(
+                    recurringTaskId,
+                    recurrenceType,
+                    interval);
+
+    recurringTaskService.addRecurringTask(recurringTask);
+
+    activityLogService.addLog(
+            new ActivityLog(
+                    "Recurring Task Added",
+                    "Today",
+                    "Now"));
+
+    break;
+
+case 15:
+
+    recurringTaskService.showRecurringTasks();
+
+    break;
+
+
+    case 16:
+
+    System.out.print("Enter Task ID to Execute : ");
+    int executeId = sc.nextInt();
+
+    executeTask.execute(executeId);
+
+    activityLogService.addLog(
+            new ActivityLog(
+                    "Task Executed",
+                    "Today",
+                    "Now"));
+
+    break;
+
+
+case 17:
+
+    reportService.generateReport(
+        taskService.getTaskCount(),
+        taskService.getCompletedTaskCount(),
+        taskService.getPendingTaskCount()
+);
+
+    break;
+
+
+case 18:
+
+    System.out.println("Thank You...");
+    sc.close();
+    return;
+
+
+default:
+
+    System.out.println("Invalid Choice"); 
             }
         }
     }

@@ -6,6 +6,7 @@ public class Reminder {
     private String reminderTime;
     private String message;
 
+
     public Reminder(int reminderId, int taskId, String reminderDate,
                     String reminderTime, String message) {
 
@@ -15,6 +16,10 @@ public class Reminder {
         this.reminderTime = reminderTime;
         this.message = message;
     }
+
+    public Reminder(){
+
+}
 
     // Reminder ID
     public void setReminderId(int reminderId) {

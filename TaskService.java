@@ -83,4 +83,35 @@ public class TaskService {
     public Task getTask(int index) {
         return tasks[index];
     }
+
+
+
+public int getCompletedTaskCount(){
+
+    int completed = 0;
+
+    for(int i=0;i<taskCount;i++){
+
+        if(tasks[i].getStatus().equalsIgnoreCase("completed")){
+            completed++;
+        }
+    }
+
+    return completed;
+}
+
+
+public int getPendingTaskCount(){
+
+    int pending = 0;
+
+    for(int i=0;i<taskCount;i++){
+
+        if(!tasks[i].getStatus().equalsIgnoreCase("completed")){
+            pending++;
+        }
+    }
+
+    return pending;
+}
 }
