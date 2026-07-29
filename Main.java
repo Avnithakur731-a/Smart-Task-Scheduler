@@ -6,55 +6,163 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
+        // Core Services
         UserService userService = new UserService();
         TaskService taskService = new TaskService();
         SearchService searchService = new SearchService();
         FileManager fileManager = new FileManager();
+
+        // Utility Services
         LoggerService loggerService = new LoggerService();
-Notification notification = new Notification();
-CategoryService categoryService = new CategoryService();
-ReportService reportService = new ReportService();
-ValidationService validationService = new ValidationService();
-Reminder reminder = new Reminder();
+        ValidationService validationService = new ValidationService();
+        CategoryService categoryService = new CategoryService();
+        ReportService reportService = new ReportService();
 
-WorkflowEngine workflowEngine = new WorkflowEngine();
-PriorityManager priorityManager = new PriorityManager();
-ExecuteTask executeTask = new ExecuteTask();
+        // Workflow
+        WorkflowEngine workflowEngine = new WorkflowEngine();
+        PriorityManager priorityManager = new PriorityManager();
+        ExecuteTask executeTask = new ExecuteTask();
+        SchedulerEngine schedulerEngine = new SchedulerEngine();
 
-AnalyticsDashboard analyticsDashboard = new AnalyticsDashboard();
-ActivityLogService activityLogService = new ActivityLogService();
+        // Dashboard
+        AnalyticsDashboard analyticsDashboard = new AnalyticsDashboard();
+        Dashboard dashboard = new Dashboard();
 
-DependencyManager dependencyManager = new DependencyManager();
-RecurringTaskService recurringTaskService = new RecurringTaskService();
+        // Activity
+        ActivityLogService activityLogService = new ActivityLogService();
+
+        // Dependency
+        DependencyManager dependencyManager = new DependencyManager();
+
+        // Recurring
+        RecurringTaskService recurringTaskService =
+                new RecurringTaskService();
+
+        // Statistics
+        TaskStatistics taskStatistics = new TaskStatistics();
+
+        // Filter & Sort
+        TaskFilter taskFilter = new TaskFilter();
+        TaskSorter taskSorter = new TaskSorter();
+
+        // Notification
+        NotificationService notificationService =
+                new NotificationService();
+
+        ReminderService reminderService =
+                new ReminderService();
+
+        // Import Export
+        ExportManager exportManager =
+                new ExportManager();
+
+        ImportManager importManager =
+                new ImportManager();
+
+        // User Session
+        UserSession userSession =
+                new UserSession();
+
+        // Others
+        ScheduleOptimizer scheduleOptimizer =
+                new ScheduleOptimizer();
+
+        BackgroundWorker backgroundWorker =
+                new BackgroundWorker();
+
+        ThreadPoolManager threadPoolManager =
+                new ThreadPoolManager();
+
+        BackupManager backupManager =
+                new BackupManager();
+
+        RestoreManager restoreManager =
+                new RestoreManager();
+
+        AuditManager auditManager =
+                new AuditManager();
+
+        SearchHistory searchHistory =
+                new SearchHistory();
+
+        LoginHistory loginHistory =
+                new LoginHistory();
+
+        PerformanceMonitor performanceMonitor =
+                new PerformanceMonitor();
+
+        SystemMonitor systemMonitor =
+                new SystemMonitor();
+
+        DatabaseManager databaseManager =
+                new DatabaseManager();
+
+        SecurityManager securityManager =
+                new SecurityManager();
+
+        ConfigManager configManager =
+                new ConfigManager();
+
+        SettingsManager settingsManager =
+                new SettingsManager();
+
+        ObserverManager observerManager =
+                new ObserverManager();
+
+        CommandManager commandManager =
+                new CommandManager();
+
+        TaskValidator taskValidator =
+                new TaskValidator();
+
+        UserReport userReport =
+                new UserReport();
+
+        TaskArchive taskArchive =
+                new TaskArchive();
+
+        ProjectManager projectManager =
+                new ProjectManager();
+
+        dashboard.welcome();
+        projectManager.startProject();
+        projectManager.initializeModules();
 
         while (true) {
 
             System.out.println("\n========== SMART TASK SCHEDULER ==========");
-System.out.println("1. Add User");
-System.out.println("2. Login");
-System.out.println("3. Create Task");
-System.out.println("4. Display Tasks");
-System.out.println("5. Edit Task");
-System.out.println("6. Delete Task");
-System.out.println("7. Search Task By ID");
-System.out.println("8. Search Task By Title");
-System.out.println("9. Save Tasks");
-System.out.println("10. Analytics Dashboard");
-System.out.println("11. Show Activity Logs");
-System.out.println("12. Add Dependency");
-System.out.println("13. Show Dependencies");
-System.out.println("14. Add Recurring Task");
-System.out.println("15. Show Recurring Tasks");
-System.out.println("16. Execute Task");
-System.out.println("17. Generate Report");
-System.out.println("18. Exit");
-System.out.print("Enter Choice : ");
+            System.out.println("1. Add User");
+            System.out.println("2. Login");
+            System.out.println("3. Create Task");
+            System.out.println("4. Display Tasks");
+            System.out.println("5. Edit Task");
+            System.out.println("6. Delete Task");
+            System.out.println("7. Search Task By ID");
+            System.out.println("8. Search Task By Title");
+            System.out.println("9. Save Tasks");
+            System.out.println("10. Analytics Dashboard");
+            System.out.println("11. Show Activity Logs");
+            System.out.println("12. Add Dependency");
+            System.out.println("13. Show Dependencies");
+            System.out.println("14. Add Recurring Task");
+            System.out.println("15. Show Recurring Tasks");
+            System.out.println("16. Execute Task");
+            System.out.println("17. Generate Report");
+            System.out.println("18. Task Statistics");
+            System.out.println("19. Filter By Status");
+            System.out.println("20. Filter By Priority");
+            System.out.println("21. Sort By Due Date");
+            System.out.println("22. Sort By Title");
+            System.out.println("23. Export Tasks");
+            System.out.println("24. Import Tasks");
+            System.out.println("25. Exit");
+
+            System.out.print("Enter Choice : ");
 
             int choice = sc.nextInt();
 
             switch (choice) {
-
-                case 1:
+                                case 1:
 
                     sc.nextLine();
 
@@ -73,6 +181,11 @@ System.out.print("Enter Choice : ");
                     User user = new User(name, email, id, password);
 
                     userService.addUser(user);
+                    loggerService.log("New User Added");
+                    auditManager.userLogin(user);
+                    observerManager.notifyUser("New User Registered");
+
+                    System.out.println("User Added Successfully.");
 
                     break;
 
@@ -89,6 +202,8 @@ System.out.print("Enter Choice : ");
                     if (userService.login(loginEmail, loginPassword)) {
 
                         System.out.println("Login Successful");
+
+                        loginHistory.addLogin(loginEmail);
 
                     } else {
 
@@ -118,9 +233,27 @@ System.out.print("Enter Choice : ");
                     System.out.print("Enter Due Date : ");
                     int dueDate = sc.nextInt();
 
-                    Task task = new Task(taskId, title, description, priority, status, dueDate);
+                    Task task = new Task(
+                            taskId,
+                            title,
+                            description,
+                            priority,
+                            status,
+                            dueDate);
 
                     taskService.addTask(task);
+
+                    notificationService.taskCreated(task);
+
+                    activityLogService.addLog(
+                            new ActivityLog(
+                                    "Task Created",
+                                    "Today",
+                                    "Now"));
+
+                    observerManager.taskCreated(task);
+
+                    taskValidator.printResult(task);
 
                     break;
 
@@ -129,10 +262,12 @@ System.out.print("Enter Choice : ");
                     taskService.displayTasks();
 
                     break;
+
                 case 5:
 
                     System.out.print("Enter Task ID : ");
                     int editId = sc.nextInt();
+
                     sc.nextLine();
 
                     System.out.print("Enter New Title : ");
@@ -150,8 +285,20 @@ System.out.print("Enter Choice : ");
                     System.out.print("Enter New Due Date : ");
                     int newDueDate = sc.nextInt();
 
-                    if (taskService.editTask(editId, newTitle, newDescription,
-                            newPriority, newStatus, newDueDate)) {
+                    if (taskService.editTask(
+                            editId,
+                            newTitle,
+                            newDescription,
+                            newPriority,
+                            newStatus,
+                            newDueDate)) {
+
+                        Task updatedTask =
+                                searchService.searchById(taskService, editId);
+
+                        notificationService.taskUpdated(updatedTask);
+
+                        observerManager.taskUpdated(updatedTask);
 
                         System.out.println("Task Updated Successfully");
 
@@ -169,6 +316,10 @@ System.out.print("Enter Choice : ");
 
                     if (taskService.deleteTask(deleteId)) {
 
+                        notificationService.taskDeleted(deleteId);
+
+                        observerManager.taskDeleted(deleteId);
+
                         System.out.println("Task Deleted Successfully");
 
                     } else {
@@ -177,13 +328,13 @@ System.out.print("Enter Choice : ");
                     }
 
                     break;
-
-                case 7:
+                                    case 7:
 
                     System.out.print("Enter Task ID : ");
                     int searchId = sc.nextInt();
 
-                    Task foundTask = searchService.searchById(taskService, searchId);
+                    Task foundTask =
+                            searchService.searchById(taskService, searchId);
 
                     if (foundTask != null) {
 
@@ -194,6 +345,9 @@ System.out.print("Enter Choice : ");
                         System.out.println("Priority : " + foundTask.getPriority());
                         System.out.println("Status : " + foundTask.getStatus());
                         System.out.println("Due Date : " + foundTask.getDuedate());
+
+                        searchHistory.addHistory(
+                                "Search By ID : " + searchId);
 
                     } else {
 
@@ -209,7 +363,10 @@ System.out.print("Enter Choice : ");
                     System.out.print("Enter Title : ");
                     String searchTitle = sc.nextLine();
 
-                    Task titleTask = searchService.searchByTitle(taskService, searchTitle);
+                    Task titleTask =
+                            searchService.searchByTitle(
+                                    taskService,
+                                    searchTitle);
 
                     if (titleTask != null) {
 
@@ -220,6 +377,9 @@ System.out.print("Enter Choice : ");
                         System.out.println("Priority : " + titleTask.getPriority());
                         System.out.println("Status : " + titleTask.getStatus());
                         System.out.println("Due Date : " + titleTask.getDuedate());
+
+                        searchHistory.addHistory(
+                                "Search By Title : " + searchTitle);
 
                     } else {
 
@@ -232,123 +392,224 @@ System.out.print("Enter Choice : ");
 
                     fileManager.saveTasks(taskService);
 
+                    loggerService.log("Tasks Saved");
+
                     break;
 
                 case 10:
 
-    analyticsDashboard.displayAnalytics(
-            taskService.getTaskCount(),
-            taskService.getCompletedTaskCount(),
-            taskService.getPendingTaskCount());
+                    analyticsDashboard.displayAnalytics(
 
-    break;
+                            taskService.getTaskCount(),
+                            taskService.getCompletedTaskCount(),
+                            taskService.getPendingTaskCount());
 
-case 11:
+                    taskStatistics.showStatistics(taskService);
 
-    activityLogService.showLogs();
+                    break;
 
-    break;
+                case 11:
 
-case 12:
+                    activityLogService.showLogs();
 
-    System.out.print("Enter Task ID : ");
-    int taskId1 = sc.nextInt();
+                    break;
 
-    System.out.print("Depends On Task ID : ");
-    int dependsId = sc.nextInt();
+                case 12:
 
-    TaskDependency dependency =
-            new TaskDependency(taskId1, dependsId);
+                    System.out.print("Enter Task ID : ");
+                    int taskId1 = sc.nextInt();
 
-    dependencyManager.addDependency(dependency);
+                    System.out.print("Depends On Task ID : ");
+                    int dependsId = sc.nextInt();
 
-    activityLogService.addLog(
-            new ActivityLog(
-                    "Dependency Added",
-                    "Today",
-                    "Now"));
+                    TaskDependency dependency =
+                            new TaskDependency(
+                                    taskId1,
+                                    dependsId);
 
-    break;
+                    dependencyManager.addDependency(dependency);
 
-case 13:
+                    activityLogService.addLog(
 
-    dependencyManager.showDependencies();
+                            new ActivityLog(
+                                    "Dependency Added",
+                                    "Today",
+                                    "Now"));
 
-    break;
+                    break;
 
-case 14:
+                case 13:
 
-    System.out.print("Enter Task ID : ");
-    int recurringTaskId = sc.nextInt();
+                    dependencyManager.showDependencies();
 
-    sc.nextLine();
+                    break;
 
-    System.out.print("Enter Recurrence Type (Daily/Weekly/Monthly) : ");
-    String recurrenceType = sc.nextLine();
+                case 14:
 
-    System.out.print("Enter Interval : ");
-    int interval = sc.nextInt();
+                    System.out.print("Enter Task ID : ");
+                    int recurringTaskId = sc.nextInt();
 
-    RecurringTask recurringTask =
-            new RecurringTask(
-                    recurringTaskId,
-                    recurrenceType,
-                    interval);
+                    sc.nextLine();
 
-    recurringTaskService.addRecurringTask(recurringTask);
+                    System.out.print("Enter Recurrence Type : ");
 
-    activityLogService.addLog(
-            new ActivityLog(
-                    "Recurring Task Added",
-                    "Today",
-                    "Now"));
+                    String recurrenceType =
+                            sc.nextLine();
 
-    break;
+                    System.out.print("Enter Interval : ");
 
-case 15:
+                    int interval = sc.nextInt();
 
-    recurringTaskService.showRecurringTasks();
+                    RecurringTask recurringTask =
+                            new RecurringTask(
 
-    break;
+                                    recurringTaskId,
+                                    recurrenceType,
+                                    interval);
 
+                    recurringTaskService.addRecurringTask(
+                            recurringTask);
 
-    case 16:
+                    activityLogService.addLog(
 
-    System.out.print("Enter Task ID to Execute : ");
-    int executeId = sc.nextInt();
+                            new ActivityLog(
+                                    "Recurring Task Added",
+                                    "Today",
+                                    "Now"));
 
-    executeTask.execute(executeId);
+                    break;
 
-    activityLogService.addLog(
-            new ActivityLog(
-                    "Task Executed",
-                    "Today",
-                    "Now"));
+                case 15:
 
-    break;
+                    recurringTaskService.showRecurringTasks();
 
+                    reminderService.checkAllReminders(taskService);
 
-case 17:
+                    break;
+                                    case 16:
 
-    reportService.generateReport(
-        taskService.getTaskCount(),
-        taskService.getCompletedTaskCount(),
-        taskService.getPendingTaskCount()
-);
+                    System.out.print("Enter Task ID To Execute : ");
+                    int executeId = sc.nextInt();
 
-    break;
+                    performanceMonitor.start();
 
+                    executeTask.execute(executeId);
 
-case 18:
+                    backgroundWorker.execute(
+                            searchService.searchById(taskService, executeId));
 
-    System.out.println("Thank You...");
-    sc.close();
-    return;
+                    threadPoolManager.executeTask(
+                            searchService.searchById(taskService, executeId));
 
+                    activityLogService.addLog(
+                            new ActivityLog(
+                                    "Task Executed",
+                                    "Today",
+                                    "Now"));
 
-default:
+                    performanceMonitor.stop();
+                    performanceMonitor.showExecutionTime();
 
-    System.out.println("Invalid Choice"); 
+                    break;
+
+                case 17:
+
+                    reportService.generateReport(
+                            taskService.getTaskCount(),
+                            taskService.getCompletedTaskCount(),
+                            taskService.getPendingTaskCount());
+
+                    exportManager.exportTasks(taskService);
+
+                    userReport.generate(userService);
+
+                    break;
+
+                case 18:
+
+                    taskStatistics.showStatistics(taskService);
+
+                    taskStatistics.showCompletionPercentage(taskService);
+
+                    break;
+
+                case 19:
+
+                    sc.nextLine();
+
+                    System.out.print("Enter Status : ");
+                    String filterStatus = sc.nextLine();
+
+                    taskFilter.filterByStatus(
+                            taskService,
+                            filterStatus);
+
+                    break;
+
+                case 20:
+
+                    sc.nextLine();
+
+                    System.out.print("Enter Priority : ");
+                    String filterPriority = sc.nextLine();
+
+                    taskFilter.filterByPriority(
+                            taskService,
+                            filterPriority);
+
+                    break;
+
+                case 21:
+
+                    taskSorter.sortByDueDate(taskService);
+
+                    taskSorter.display(taskService);
+
+                    break;
+
+                case 22:
+
+                    taskSorter.sortByTitle(taskService);
+
+                    taskSorter.display(taskService);
+
+                    break;
+
+                case 23:
+
+                    exportManager.exportTasks(taskService);
+
+                    backupManager.createBackup(taskService);
+
+                    break;
+
+                case 24:
+
+                    importManager.importTasks();
+
+                    restoreManager.restoreTasks();
+
+                    break;
+
+                case 25:
+
+                    systemMonitor.showSystemStatus();
+
+                    settingsManager.showSettings();
+
+                    projectManager.showProjectInfo();
+
+                    projectManager.shutdownProject();
+
+                    dashboard.exit();
+
+                    sc.close();
+
+                    return;
+
+                default:
+
+                    System.out.println("Invalid Choice");
             }
         }
     }
